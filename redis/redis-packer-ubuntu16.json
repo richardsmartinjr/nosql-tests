@@ -2,10 +2,11 @@
   "builders": [{
     "type": "googlecompute",
     "project_id": "cdpipeline-1212",
-	"image_name": "redis-server-05052016",
+	"image_name": "redis-server-ubuntu16-05052016",
 	"image_description": "This image is Ubuntu 16 LTS with Redis Server",
-    "source_image": "ubuntu-1404-trusty-v20160406",
-    "zone": "us-central1-a"
+    "source_image": "ubuntu-1604-xenial-v20160429",
+    "zone": "us-central1-a",
+    "ssh_username": "ubuntu"
   }],
   "provisioners": [{
     "type": "shell",
@@ -18,7 +19,7 @@
        "sudo sed -i -e 's/# cluster-config-file nodes-6379.conf/cluster-config-file nodes-6379.conf/g' /etc/redis/redis.conf",
        "sudo sed -i -e 's/# cluster-node-timeout 15000/cluster-node-timeout 15000/g' /etc/redis/redis.conf",
        "sudo sed -i -e 's/# cluster-slave-validity-factor 10/cluster-slave-validity-factor 10/g' /etc/redis/redis.conf",
-       "sudo sed -i -e 's/# cluster-migration-barrier 1/cluster-migration-barrier 1/g' redis.conf",
+       "sudo sed -i -e 's/# cluster-migration-barrier 1/cluster-migration-barrier 1/g' /etc/redis/redis.conf",
        "sudo sed -i -e 's/# cluster-require-full-coverage yes/cluster-require-full-coverage no/g' /etc/redis/redis.conf",
        "sudo service redis-server restart"
     ]
