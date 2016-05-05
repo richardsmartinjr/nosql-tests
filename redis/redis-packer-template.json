@@ -2,7 +2,7 @@
   "builders": [{
     "type": "googlecompute",
     "project_id": "cdpipeline-1212",
-	"image_name": "redis-server-04292016",
+	"image_name": "redis-server-05052016",
 	"image_description": "This image is Ubuntu 16 LTS with Redis Server",
     "source_image": "ubuntu-1604-xenial-v20160429",
     "zone": "us-central1-a"
