@@ -12,7 +12,7 @@ name = args.name
 current_milli_time = lambda: int(round(time.time() * 1000))
 
 
-cluster = Cluster(['192.168.0.1', '192.168.0.2'])
+cluster = Cluster(['127.0.0.1'])
 s = cluster.connect()
 s.execute("create keyspace if not exists testing with replication = {'class': 'SimpleStrategy', 'replication_factor': 1}")
 s.execute("create table if not exists testing.testing(row_key varchar PRIMARY KEY, row_value bigint )")
