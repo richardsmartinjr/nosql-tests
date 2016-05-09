@@ -2,6 +2,7 @@
 
 
 python3 test.py -n a > a.out &
+sleep 8
 python3 test.py -n b > b.out &
 python3 test.py -n c > c.out &
 python3 test.py -n d > d.out &

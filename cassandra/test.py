@@ -1,7 +1,9 @@
 from random import randint
 import time 
 import argparse
-from cassandra.cluster import Cluster
+from cassandra.cluster import Cluster,NoHostAvailable
+from cassandra import Unavailable,WriteTimeout
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--name", dest = "name", default = "a", help="Name that will be added to key")
@@ -12,9 +14,9 @@ name = args.name
 current_milli_time = lambda: int(round(time.time() * 1000))
 
 
-cluster = Cluster(['127.0.0.1'])
+cluster = Cluster(['10.240.0.8','10.240.0.10','10.240.0.12'])
 s = cluster.connect()
-s.execute("create keyspace if not exists testing with replication = {'class': 'SimpleStrategy', 'replication_factor': 1}")
+s.execute("create keyspace if not exists testing with replication = {'class': 'SimpleStrategy', 'replication_factor': 2}")
 s.execute("create table if not exists testing.testing(row_key varchar PRIMARY KEY, row_value bigint )")
 s = cluster.connect("testing")
 
@@ -35,7 +37,7 @@ while id < 200:
   id = id + 1
 
 
-while id < 100000:
+while id < 40000:
   try:
     action = randint(1, 3)
     if action == 1:
@@ -70,9 +72,12 @@ while id < 100000:
         print(str(end-start)+'ms del ' + str(k[u]))
         deletes.append(k[u])
         del(sessions[k[u]])
-  except (ClusterError, ConnectionError):
-    print('Cluster Timeout') 
-
+  except (Unavailable):
+    print('Cassandra unavilable') 
+  except(WriteTimeout):
+    print('Write timeout')
+  except(NoHostAvailable):
+    print('No Host Available')
 
 #Compare redis sessions to
 for key in sessions.keys():
@@ -81,14 +86,14 @@ for key in sessions.keys():
   if not rows:
     print('error missing ' + str(key))
   else:
-   for row in rows:
-    b = row.row_value
-    if a != b:
-      print('error unequal '+str(a)+','+str(b))
+    for row in rows:
+      b = row.row_value
+      if a != b:
+        print('error unequal '+str(a)+','+str(b))
 
 
 for item in deletes:
-  rows = s.execute('SELECT row_value FROM testing where row_key=%s',[name + str(key)])
+  rows = s.execute('SELECT row_value FROM testing where row_key=%s',[name + str(item)])
   if rows:
     print('error not deleted ' + str(item))
 
