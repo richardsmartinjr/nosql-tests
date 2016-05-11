@@ -1,5 +1,5 @@
 from random import randint
-import time import sleep, time
+from time import sleep, time
 import argparse
 from cassandra.cluster import Cluster,NoHostAvailable
 from cassandra import Unavailable,WriteTimeout,ReadTimeout
@@ -16,7 +16,7 @@ current_milli_time = lambda: int(round(time() * 1000))
 
 cluster = Cluster(['10.240.0.8','10.240.0.9','10.240.0.10'])
 s = cluster.connect()
-s.execute("create keyspace if not exists testing with replication = {'class': 'SimpleStrategy', 'replication_factor': 3}")
+s.execute("create keyspace if not exists testing with replication = {'class': 'SimpleStrategy', 'replication_factor': 2}")
 s.execute("create table if not exists testing.testing(row_key varchar PRIMARY KEY, row_value bigint )")
 s = cluster.connect("testing")
 
