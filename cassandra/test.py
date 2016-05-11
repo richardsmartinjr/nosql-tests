@@ -1,5 +1,5 @@
 from random import randint
-import time 
+import time import sleep, time
 import argparse
 from cassandra.cluster import Cluster,NoHostAvailable
 from cassandra import Unavailable,WriteTimeout,ReadTimeout
@@ -11,7 +11,7 @@ args = parser.parse_args()
 name = args.name
 
 
-current_milli_time = lambda: int(round(time.time() * 1000))
+current_milli_time = lambda: int(round(time() * 1000))
 
 
 cluster = Cluster(['10.240.0.8','10.240.0.9','10.240.0.10'])
@@ -31,6 +31,7 @@ writing = True
 
 #Create 100 sessions
 while id < 200:
+  sleep(0.1)
   #Insert into redis
   sessions[id] = 1
   start = current_milli_time()
@@ -42,6 +43,7 @@ while id < 200:
 
 
 while id < 30000:
+  sleep(0.1)
   try:
     action = randint(1, 3)
     if action == 1:
