@@ -31,7 +31,7 @@ writing = True
 
 #Create 100 sessions
 while id < 200:
-  sleep(0.1)
+  sleep(0.025)
   #Insert into redis
   sessions[id] = 1
   start = current_milli_time()
@@ -43,7 +43,7 @@ while id < 200:
 
 
 while id < 30000:
-  sleep(0.1)
+  sleep(0.025)
   try:
     action = randint(1, 3)
     if action == 1:
