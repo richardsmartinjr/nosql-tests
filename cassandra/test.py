@@ -14,7 +14,7 @@ name = args.name
 current_milli_time = lambda: int(round(time() * 1000))
 
 
-cluster = Cluster(['10.240.0.8','10.240.0.9','10.240.0.10'])
+cluster = Cluster(['10.240.0.8','10.240.0.9'])
 s = cluster.connect()
 s.execute("create keyspace if not exists testing with replication = {'class': 'SimpleStrategy', 'replication_factor': 2}")
 s.execute("create table if not exists testing.testing(row_key varchar PRIMARY KEY, row_value bigint )")
